@@ -759,6 +759,8 @@ export default function App() {
         .custom-scroll::-webkit-scrollbar { display: none; }
         input[type=range]{-webkit-appearance:none;height:6px;border-radius:3px;background:rgba(139,92,246,.25);}
         input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;background:#7c3aed;border-radius:50%;cursor:pointer;box-shadow:0 0 8px rgba(124,58,237,.5);}
+        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {-webkit-appearance:none;margin:0;}
+        input[type=number]{-moz-appearance:textfield;}
       `}</style>
             <Stars />
             <div style={{ position: "absolute", top: -80, right: -80, width: 320, height: 320, borderRadius: "50%", background: "var(--orb-bg)", pointerEvents: "none" }} />
@@ -920,26 +922,26 @@ export default function App() {
                                 return <>
                                     <div style={{ background: "var(--glass-bg-hover)", borderRadius: 12, padding: "12px", border: wwErr ? "1px solid rgba(239, 68, 68, 0.4)" : "1px solid transparent" }}>
                                         <div style={{ color: "var(--text-muted)", fontSize: 10, textTransform: "uppercase", marginBottom: 6 }}>Actual Avg WW</div>
-                                        <div style={{ display: "flex", alignItems: "center", gap: 3 }}>
-                                            <input type="number" defaultValue={Math.floor(f.ww / 60)} onChange={e => { window._hForm.ww = (parseInt(e.target.value) || 0) * 60 + (window._hForm.ww % 60); setNow(new Date()); }} style={{ background: "none", border: "none", color: wwErr ? "#f87171" : "var(--accent-lighter)", fontSize: 18, fontWeight: 700, width: 30, outline: "none", textAlign: "right" }} />
-                                            <span style={{ fontSize: 11, color: "var(--text-muted)", fontWeight: 700 }}>h</span>
-                                            <input type="number" defaultValue={f.ww % 60} onChange={e => { window._hForm.ww = (Math.floor(window._hForm.ww / 60) * 60) + (parseInt(e.target.value) || 0); setNow(new Date()); }} style={{ background: "none", border: "none", color: wwErr ? "#f87171" : "var(--accent-lighter)", fontSize: 18, fontWeight: 700, width: 35, outline: "none", textAlign: "right" }} />
-                                            <span style={{ fontSize: 11, color: "var(--text-muted)", fontWeight: 700 }}>m</span>
+                                        <div style={{ display: "flex", alignItems: "baseline", gap: 2 }}>
+                                            <input type="number" defaultValue={Math.floor(f.ww / 60)} onChange={e => { window._hForm.ww = (parseInt(e.target.value) || 0) * 60 + (window._hForm.ww % 60); setNow(new Date()); }} style={{ background: "none", border: "none", borderBottom: `1px solid ${wwErr ? "rgba(248,113,113,0.3)" : "var(--accent-glass-border)"}`, color: wwErr ? "#f87171" : "var(--accent-lighter)", fontSize: 20, fontWeight: 800, width: 35, outline: "none", textAlign: "center", paddingBottom: 2 }} />
+                                            <span style={{ fontSize: 13, color: "var(--text-muted)", fontWeight: 700, marginRight: 8 }}>h</span>
+                                            <input type="number" defaultValue={f.ww % 60} onChange={e => { window._hForm.ww = (Math.floor(window._hForm.ww / 60) * 60) + (parseInt(e.target.value) || 0); setNow(new Date()); }} style={{ background: "none", border: "none", borderBottom: `1px solid ${wwErr ? "rgba(248,113,113,0.3)" : "var(--accent-glass-border)"}`, color: wwErr ? "#f87171" : "var(--accent-lighter)", fontSize: 20, fontWeight: 800, width: 45, outline: "none", textAlign: "center", paddingBottom: 2 }} />
+                                            <span style={{ fontSize: 13, color: "var(--text-muted)", fontWeight: 700 }}>m</span>
                                         </div>
                                         {wwErr && <div style={{ fontSize: 9, color: "#f87171", marginTop: 4 }}>⚠️ High deviation from {base}m</div>}
                                     </div>
                                     <div style={{ background: "var(--glass-bg-hover)", borderRadius: 12, padding: "12px", border: durErr ? "1px solid rgba(239, 68, 68, 0.4)" : "1px solid transparent" }}>
                                         <div style={{ color: "var(--text-muted)", fontSize: 10, textTransform: "uppercase", marginBottom: 6 }}>Actual Avg Nap</div>
-                                        <div style={{ display: "flex", alignItems: "center", gap: 3 }}>
-                                            <input type="number" defaultValue={Math.floor(f.dur / 60)} onChange={e => { window._hForm.dur = (parseInt(e.target.value) || 0) * 60 + (window._hForm.dur % 60); setNow(new Date()); }} style={{ background: "none", border: "none", color: durErr ? "#f87171" : "var(--accent-lighter)", fontSize: 18, fontWeight: 700, width: 30, outline: "none", textAlign: "right" }} />
-                                            <span style={{ fontSize: 11, color: "var(--text-muted)", fontWeight: 700 }}>h</span>
-                                            <input type="number" defaultValue={f.dur % 60} onChange={e => { window._hForm.dur = (Math.floor(window._hForm.dur / 60) * 60) + (parseInt(e.target.value) || 0); setNow(new Date()); }} style={{ background: "none", border: "none", color: durErr ? "#f87171" : "var(--accent-lighter)", fontSize: 18, fontWeight: 700, width: 35, outline: "none", textAlign: "right" }} />
-                                            <span style={{ fontSize: 11, color: "var(--text-muted)", fontWeight: 700 }}>m</span>
+                                        <div style={{ display: "flex", alignItems: "baseline", gap: 2 }}>
+                                            <input type="number" defaultValue={Math.floor(f.dur / 60)} onChange={e => { window._hForm.dur = (parseInt(e.target.value) || 0) * 60 + (window._hForm.dur % 60); setNow(new Date()); }} style={{ background: "none", border: "none", borderBottom: `1px solid ${durErr ? "rgba(248,113,113,0.3)" : "var(--accent-glass-border)"}`, color: durErr ? "#f87171" : "var(--accent-lighter)", fontSize: 20, fontWeight: 800, width: 35, outline: "none", textAlign: "center", paddingBottom: 2 }} />
+                                            <span style={{ fontSize: 13, color: "var(--text-muted)", fontWeight: 700, marginRight: 8 }}>h</span>
+                                            <input type="number" defaultValue={f.dur % 60} onChange={e => { window._hForm.dur = (Math.floor(window._hForm.dur / 60) * 60) + (parseInt(e.target.value) || 0); setNow(new Date()); }} style={{ background: "none", border: "none", borderBottom: `1px solid ${durErr ? "rgba(248,113,113,0.3)" : "var(--accent-glass-border)"}`, color: durErr ? "#f87171" : "var(--accent-lighter)", fontSize: 20, fontWeight: 800, width: 45, outline: "none", textAlign: "center", paddingBottom: 2 }} />
+                                            <span style={{ fontSize: 13, color: "var(--text-muted)", fontWeight: 700 }}>m</span>
                                         </div>
                                     </div>
                                     <div style={{ background: "var(--glass-bg-hover)", borderRadius: 12, padding: "12px" }}>
                                         <div style={{ color: "var(--text-muted)", fontSize: 10, textTransform: "uppercase", marginBottom: 4 }}>Naps/Day</div>
-                                        <input type="number" defaultValue={f.naps} onChange={e => { window._hForm.naps = parseInt(e.target.value) || naps; setNow(new Date()); }} style={{ background: "none", border: "none", color: "var(--accent-lighter)", fontSize: 18, fontWeight: 700, width: "100%", outline: "none" }} />
+                                        <input type="number" defaultValue={f.naps} onChange={e => { window._hForm.naps = parseInt(e.target.value) || naps; setNow(new Date()); }} style={{ background: "none", border: "none", borderBottom: "1px solid var(--accent-glass-border)", color: "var(--accent-lighter)", fontSize: 20, fontWeight: 800, width: "100%", outline: "none", paddingBottom: 2 }} />
                                     </div>
                                     <button
                                         onClick={() => {
@@ -1133,7 +1135,7 @@ export default function App() {
                     ))}
 
                     <div style={{ textAlign: "center", padding: "20px 0", color: "var(--text-muted)", fontSize: 11 }}>
-                        Version 3.2.0 · Little Dreamz AI Engine
+                        Version 3.2.0 · Little Dreamz designed by Alina J.
                     </div>
                 </div>}
 
