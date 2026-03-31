@@ -1,0 +1,176 @@
+/* ─── Theme Variables ─────────────────────────────────────────────────────── */
+:root {
+  /* Page */
+  --bg-gradient: linear-gradient(155deg,#080516 0%,#120d2c 50%,#0a1525 100%);
+  --body-bg: #080516;
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted: #475569;
+  --text-dim: #334155;
+  --text-faint: #64748b;
+
+  /* Accent (purple) */
+  --accent: #7c3aed;
+  --accent-light: #a78bfa;
+  --accent-lighter: #c4b5fd;
+  --accent-dark: #4f46e5;
+  --accent-glow: rgba(124,58,237,0.5);
+  --accent-gradient: linear-gradient(135deg, #7c3aed, #4f46e5);
+
+  /* Glass surfaces */
+  --glass-bg: rgba(255,255,255,0.04);
+  --glass-bg-hover: rgba(255,255,255,0.06);
+  --glass-border: rgba(255,255,255,0.07);
+  --glass-border-strong: rgba(255,255,255,0.12);
+  --glass-input-bg: rgba(255,255,255,0.06);
+
+  /* Accent glass */
+  --accent-glass-bg: rgba(139,92,246,0.1);
+  --accent-glass-border: rgba(139,92,246,0.22);
+  --accent-glass-bg-strong: rgba(139,92,246,0.15);
+  --accent-glass-border-strong: rgba(139,92,246,0.35);
+  --accent-glass-bg-active: rgba(139,92,246,0.13);
+  --accent-glass-border-active: rgba(139,92,246,0.38);
+  --accent-tab-bg: rgba(124,58,237,0.32);
+  --accent-tab-shadow: 0 2px 10px rgba(124,58,237,0.25);
+
+  /* Modal / overlay */
+  --modal-bg: rgba(20, 15, 45, 0.95);
+  --modal-bg-light: rgba(20, 15, 45, 0.92);
+  --overlay-bg: rgba(0,0,0,0.8);
+  --overlay-bg-light: rgba(0,0,0,0.75);
+  --sheet-bg: #160f35;
+
+  /* Button surfaces */
+  --btn-off-bg: linear-gradient(135deg,#1e293b,#334155);
+  --btn-off-shadow: 0 4px 14px rgba(0,0,0,0.4);
+  --btn-save-shadow: 0 4px 18px rgba(124,58,237,0.4);
+
+  /* Decorative */
+  --orb-bg: radial-gradient(circle,rgba(124,58,237,0.14) 0%,transparent 70%);
+  --star-color: white;
+  --star-opacity: 0.35;
+  --logo-glow: drop-shadow(0 0 12px rgba(167,139,250,0.3));
+  --title-gradient: linear-gradient(125deg,#e2e8f0,#a78bfa);
+
+  /* Semantic colors (unchanged across themes) */
+  --color-success: #4ade80;
+  --color-warning: #f59e0b;
+  --color-error: #f87171;
+  --color-info: #22d3ee;
+  --color-bedtime: #fbbf24;
+  --color-bedtime-dim: #78716c;
+  --bedtime-bg: rgba(251,191,36,.07);
+  --bedtime-border: rgba(251,191,36,.18);
+  --bedtime-color: #fbbf24;
+  --bedtime-muted: #78716c;
+
+  /* Confidence Tags */
+  --conf-high-bg: rgba(34,197,94,.2);
+  --conf-high-text: #4ade80;
+  --conf-medium-bg: rgba(234,179,8,.2);
+  --conf-medium-text: #facc15;
+  --conf-low-bg: rgba(239,68,68,.2);
+  --conf-low-text: #f87171;
+
+  /* Range input */
+  --range-track: rgba(139,92,246,0.25);
+  --range-thumb: #7c3aed;
+  --range-thumb-shadow: 0 0 8px rgba(124,58,237,0.5);
+
+  /* Slider label pill */
+  --pill-bg: rgba(139,92,246,0.15);
+  --pill-border: rgba(139,92,246,0.25);
+
+  /* Misc */
+  --separator: rgba(255,255,255,0.06);
+  --grab-bar: rgba(255,255,255,0.15);
+  --ring-color-1: rgba(139,92,246,0.5);
+  --ring-color-2: rgba(139,92,246,0.3);
+  --dashed-border: rgba(139,92,246,0.33);
+  --dashed-bg: rgba(139,92,246,0.06);
+
+  /* History card */
+  --history-text: #cbd5e1;
+
+  /* Theme transition */
+  --theme-transition: background 0.4s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* ─── LIGHT THEME ─────────────────────────────────────────────────────────── */
+[data-theme="light"] {
+  --bg-gradient: linear-gradient(155deg, #e8f4fd 0%, #fef9ef 50%, #eaf6ff 100%);
+  --body-bg: #f0f7ff;
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --text-dim: #94a3b8;
+  --text-faint: #94a3b8;
+
+  --accent: #6d28d9;
+  --accent-light: #7c3aed;
+  --accent-lighter: #6d28d9;
+  --accent-dark: #4f46e5;
+  --accent-glow: rgba(109,40,217,0.35);
+  --accent-gradient: linear-gradient(135deg, #7c3aed, #6366f1);
+
+  --glass-bg: rgba(255,255,255,0.55);
+  --glass-bg-hover: rgba(255,255,255,0.7);
+  --glass-border: rgba(109,40,217,0.1);
+  --glass-border-strong: rgba(109,40,217,0.15);
+  --glass-input-bg: rgba(255,255,255,0.6);
+
+  --accent-glass-bg: rgba(109,40,217,0.07);
+  --accent-glass-border: rgba(109,40,217,0.15);
+  --accent-glass-bg-strong: rgba(109,40,217,0.1);
+  --accent-glass-border-strong: rgba(109,40,217,0.2);
+  --accent-glass-bg-active: rgba(109,40,217,0.08);
+  --accent-glass-border-active: rgba(109,40,217,0.25);
+  --accent-tab-bg: rgba(109,40,217,0.12);
+  --accent-tab-shadow: 0 2px 10px rgba(109,40,217,0.12);
+
+  --modal-bg: rgba(255,255,255,0.95);
+  --modal-bg-light: rgba(255,255,255,0.92);
+  --overlay-bg: rgba(0,0,0,0.3);
+  --overlay-bg-light: rgba(0,0,0,0.25);
+  --sheet-bg: #ffffff;
+
+  --btn-off-bg: linear-gradient(135deg,#e2e8f0,#cbd5e1);
+  --btn-off-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  --btn-save-shadow: 0 4px 18px rgba(109,40,217,0.25);
+
+  --orb-bg: radial-gradient(circle, rgba(250,204,21,0.2) 0%, transparent 70%);
+  --star-color: #fbbf24;
+  --star-opacity: 0.5;
+  --logo-glow: drop-shadow(0 0 12px rgba(250,204,21,0.4));
+  --title-gradient: linear-gradient(125deg,#1e293b,#6d28d9);
+
+  --range-track: rgba(109,40,217,0.15);
+  --range-thumb: #6d28d9;
+  --range-thumb-shadow: 0 0 8px rgba(109,40,217,0.3);
+
+  --pill-bg: rgba(109,40,217,0.08);
+  --pill-border: rgba(109,40,217,0.15);
+
+  --separator: rgba(0,0,0,0.06);
+  --grab-bar: rgba(0,0,0,0.12);
+  --ring-color-1: rgba(109,40,217,0.35);
+  --ring-color-2: rgba(109,40,217,0.2);
+  --dashed-border: rgba(109,40,217,0.25);
+  --dashed-bg: rgba(109,40,217,0.04);
+
+  --history-text: #334155;
+
+  --bedtime-bg: rgba(245, 158, 11, 0.1);
+  --bedtime-border: rgba(245, 158, 11, 0.25);
+  --bedtime-color: #d97706;
+  --bedtime-muted: #92400e;
+
+  /* Confidence Tags (Light Mode) */
+  --conf-high-bg: rgba(22, 163, 74, 0.15);
+  --conf-high-text: #16a34a;
+  --conf-medium-bg: rgba(202, 138, 4, 0.15);
+  --conf-medium-text: #854d0e;
+  --conf-low-bg: rgba(220, 38, 38, 0.15);
+  --conf-low-text: #dc2626;
+}

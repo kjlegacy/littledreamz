@@ -73,18 +73,18 @@ function buildSchedule(wake, weeks, recentEvents = [], useStretch = true, learne
 
     for (let i = 0; i < napsPerDay; i++) {
         const isLast = i === napsPerDay - 1;
-        
+
         // 1. Calculate sleep accumulated before this nap point
         const totalSleepSoFar = recentEvents
             .slice(0, i)
             .reduce((s, e) => s + (e.duration || 0), 0);
-            
+
         // 2. Base from age
         let base = baseWakeWindow(weeks);
 
         // 3. Adjust by previous nap type
         const prevActual = recentEvents[i - 1];
-        let lastNapDur = prevActual ? prevActual.duration : 90; 
+        let lastNapDur = prevActual ? prevActual.duration : 90;
         const napType = classifyNap(lastNapDur);
         let wakeWindow = adjustByNap(base, napType);
 
@@ -164,7 +164,7 @@ function save(d) {
 
 function Logo({ size = 42 }) {
     return (
-        <svg width={size} height={size} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ filter: "drop-shadow(0 0 12px rgba(167,139,250,0.3))" }}>
+        <svg width={size} height={size} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ filter: "var(--logo-glow)" }}>
             <defs>
                 <radialGradient id="moonGlow" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
                     <stop offset="0%" stopColor="#c4b5fd" stopOpacity="0.4" />
@@ -236,14 +236,14 @@ function Stars() {
     }, []);
 
     return (
-        <svg ref={svgRef} style={{ position: "fixed", inset: 0, width: "100%", height: "100%", pointerEvents: "none", opacity: .35, zIndex: 0, willChange: "transform" }}>
+        <svg ref={svgRef} style={{ position: "fixed", inset: 0, width: "100%", height: "100%", pointerEvents: "none", opacity: "var(--star-opacity)", zIndex: 0, willChange: "transform" }}>
             {STARS_DATA.map((p, i) => (
                 <circle
                     key={i}
                     cx={`${p.x}%`}
                     cy={`${p.y}%`}
                     r={p.r}
-                    fill="white"
+                    fill="var(--star-color)"
                     style={{
                         transform: `translate3d(calc(var(--sx) * ${p.z * 0.15}), calc((var(--sy) * 0.15 - var(--ss) * 0.18) * ${p.z}), 0)`,
                         animation: `tw ${2.5 + p.d}s ease-in-out infinite`,
@@ -257,11 +257,11 @@ function Stars() {
     );
 }
 
-const INP = { width: "100%", background: "rgba(255,255,255,.06)", border: "1px solid rgba(255,255,255,.12)", borderRadius: 12, padding: "13px 16px", color: "#e2e8f0", fontSize: 16, outline: "none", fontFamily: "inherit", backdropFilter: "blur(8px)" };
+const INP = { width: "100%", background: "var(--glass-input-bg)", border: "1px solid var(--glass-border-strong)", borderRadius: 12, padding: "13px 16px", color: "var(--text-primary)", fontSize: 16, outline: "none", fontFamily: "inherit", backdropFilter: "blur(8px)" };
 
-const CBTN_STYLE = { background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", color: "white", borderRadius: 10, width: 34, height: 34, cursor: "pointer", fontSize: 18, display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.2s" };
-const DAYBTN_STYLE = { border: "none", color: "white", borderRadius: 10, height: 36, cursor: "pointer", fontSize: 13, fontFamily: "inherit", transition: "all 0.2s" };
-const LBTN_STYLE = { background: "none", border: "none", color: "#7c3aed", fontSize: 13, fontWeight: 700, cursor: "pointer", padding: "5px 10px" };
+const CBTN_STYLE = { background: "var(--glass-bg-hover)", border: "1px solid var(--glass-border)", color: "var(--text-primary)", borderRadius: 10, width: 34, height: 34, cursor: "pointer", fontSize: 18, display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.2s" };
+const DAYBTN_STYLE = { border: "none", color: "var(--text-primary)", borderRadius: 10, height: 36, cursor: "pointer", fontSize: 13, fontFamily: "inherit", transition: "all 0.2s" };
+const LBTN_STYLE = { background: "none", border: "none", color: "var(--accent)", fontSize: 13, fontWeight: 700, cursor: "pointer", padding: "5px 10px" };
 
 function GlassCalendar({ value, onChange, onClose }) {
     const today = new Date();
@@ -283,15 +283,15 @@ function GlassCalendar({ value, onChange, onClose }) {
     for (let i = 1; i <= daysInMonth(viewDate.getFullYear(), viewDate.getMonth()); i++) days.push(i);
 
     return (
-        <div style={{ background: "rgba(20, 15, 45, 0.92)", backdropFilter: "blur(20px)", border: "1px solid rgba(139, 92, 246, 0.35)", borderRadius: 24, padding: "20px", width: 300, color: "#e2e8f0", boxShadow: "0 25px 60px rgba(0,0,0,0.7)", zIndex: 1000, animation: "slideUp .3s ease" }}>
+        <div style={{ background: "var(--modal-bg-light)", backdropFilter: "blur(20px)", border: "1px solid var(--accent-glass-border-strong)", borderRadius: 24, padding: "20px", width: 300, color: "var(--text-primary)", boxShadow: "0 25px 60px rgba(0,0,0,0.7)", zIndex: 1000, animation: "slideUp .3s ease" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
-                <div style={{ fontWeight: 700, fontSize: 17, fontFamily: "'Playfair Display', serif", color: "#c4b5fd" }}>{viewDate.toLocaleString('default', { month: 'long', year: 'numeric' })}</div>
+                <div style={{ fontWeight: 700, fontSize: 17, fontFamily: "'Playfair Display', serif", color: "var(--accent-lighter)" }}>{viewDate.toLocaleString('default', { month: 'long', year: 'numeric' })}</div>
                 <div style={{ display: "flex", gap: 6 }}>
                     <button onClick={() => changeMonth(-1)} style={CBTN_STYLE}>‹</button>
                     <button onClick={() => changeMonth(1)} style={CBTN_STYLE}>›</button>
                 </div>
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 6, textAlign: "center", fontSize: 10, fontWeight: 800, color: "#475569", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 6, textAlign: "center", fontSize: 10, fontWeight: 800, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>
                 {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(d => <div key={d}>{d}</div>)}
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 4 }}>
@@ -302,14 +302,14 @@ function GlassCalendar({ value, onChange, onClose }) {
                         <button key={i} onClick={() => select(d)} style={{
                             ...DAYBTN_STYLE,
                             background: isSelect ? "linear-gradient(135deg, #7c3aed, #4f46e5)" : isToday ? "rgba(124, 58, 237, 0.15)" : "transparent",
-                            color: isSelect ? "white" : isToday ? "#c4b5fd" : "#e2e8f0",
+                            color: isSelect ? "white" : isToday ? "var(--accent-lighter)" : "var(--text-primary)",
                             fontWeight: isSelect || isToday ? 700 : 400,
                             border: isSelect ? "none" : isToday ? "1px solid rgba(139, 92, 246, 0.4)" : "none"
                         }}>{d}</button>
                     ) : <div key={i} />;
                 })}
             </div>
-            <div style={{ display: "flex", justifyContent: "space-between", marginTop: 18, paddingTop: 15, borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", marginTop: 18, paddingTop: 15, borderTop: "1px solid var(--separator)" }}>
                 <button onClick={() => { onChange(""); onClose(); }} style={LBTN_STYLE}>Clear</button>
                 <button onClick={() => { onChange(today.toISOString().split('T')[0]); onClose(); }} style={LBTN_STYLE}>Today</button>
             </div>
@@ -330,17 +330,17 @@ function GlassyDatePicker({ value, onChange, label }) {
     return (
         <div style={{ position: "relative" }} ref={ref}>
             <div style={SL}>{label}</div>
-            <div 
+            <div
                 onClick={() => setOpen(!open)}
                 style={{ ...INP, cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 15 }}
             >
-                <span style={{ color: value ? "#e2e8f0" : "#475569" }}>{value ? new Date(value).toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' }) : "Select date..."}</span>
+                <span style={{ color: value ? "var(--text-primary)" : "var(--text-muted)" }}>{value ? new Date(value).toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' }) : "Select date..."}</span>
                 <span style={{ fontSize: 18, filter: "drop-shadow(0 0 5px rgba(124,58,237,0.5))" }}>📅</span>
             </div>
             {open && (
-                <div 
+                <div
                     onClick={() => setOpen(false)}
-                    style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.8)", backdropFilter: "blur(4px)", zIndex: 1400, display: "flex", alignItems: "center", justifyContent: "center", padding: 20, animation: "fadeIn .2s ease" }}>
+                    style={{ position: "fixed", inset: 0, background: "var(--overlay-bg)", backdropFilter: "blur(4px)", zIndex: 1400, display: "flex", alignItems: "center", justifyContent: "center", padding: 20, animation: "fadeIn .2s ease" }}>
                     <div onClick={e => e.stopPropagation()}>
                         <GlassCalendar value={value} onChange={onChange} onClose={() => setOpen(false)} />
                     </div>
@@ -350,11 +350,58 @@ function GlassyDatePicker({ value, onChange, label }) {
     );
 }
 
+function TimeSelectModal({ value, onChange, onClose, label }) {
+    const [h, setH] = useState(value ? parseInt(value.split(':')[0]) : new Date().getHours());
+    const [m, setM] = useState(value ? parseInt(value.split(':')[1]) : new Date().getMinutes());
+    const hRef = useRef(), mRef = useRef();
+    const now = new Date();
+    const curH = now.getHours(), curM = now.getMinutes();
+
+    useEffect(() => {
+        setTimeout(() => {
+            const activeH = hRef.current?.querySelector(`[data-active="true"]`);
+            const activeM = mRef.current?.querySelector(`[data-active="true"]`);
+            if (activeH) activeH.scrollIntoView({ block: 'center', behavior: 'instant' });
+            if (activeM) activeM.scrollIntoView({ block: 'center', behavior: 'instant' });
+        }, 50);
+    }, []);
+
+    const doDone = () => {
+        const pad = (v) => String(v).padStart(2, '0');
+        onChange(`${pad(h)}:${pad(m)}`);
+        onClose();
+    };
+
+    return (
+        <div
+            onClick={onClose}
+            style={{ position: "fixed", inset: 0, background: "var(--overlay-bg)", backdropFilter: "blur(4px)", zIndex: 1400, display: "flex", alignItems: "center", justifyContent: "center", padding: 20, animation: "fadeIn .2s ease" }}>
+            <div onClick={e => e.stopPropagation()}>
+                <div style={{ background: "var(--modal-bg)", backdropFilter: "blur(24px)", border: "1px solid var(--accent-glass-border-strong)", borderRadius: 24, padding: "24px", width: 280, color: "var(--text-primary)", boxShadow: "0 25px 60px rgba(0,0,0,0.8)", animation: "slideUp .3s ease" }}>
+                    <div style={{ textAlign: "center", fontSize: 18, fontWeight: 700, marginBottom: 20, fontFamily: "'Playfair Display', serif", color: "var(--accent-lighter)" }}>{label}</div>
+                    <div style={{ display: "flex", gap: 15, height: 220 }}>
+                        <div ref={hRef} className="custom-scroll" style={{ flex: 1, overflowY: "auto", scrollbarWidth: "none" }}>
+                            {Array.from({ length: 24 }, (_, i) => (
+                                <button key={i} data-active={h === i} onClick={() => setH(i)} disabled={i > curH} style={{ ...DAYBTN_STYLE, width: "100%", background: h === i ? "linear-gradient(135deg,#7c3aed,#4f46e5)" : "transparent", color: h === i ? "white" : "var(--text-primary)", fontWeight: h === i ? 700 : 400, marginBottom: 4, height: 42, fontSize: 16, opacity: i > curH ? 0.2 : 1, cursor: i > curH ? "not-allowed" : "pointer" }}>{String(i).padStart(2, '0')}</button>
+                            ))}
+                        </div>
+                        <div ref={mRef} className="custom-scroll" style={{ flex: 1, overflowY: "auto", scrollbarWidth: "none" }}>
+                            {Array.from({ length: 60 }, (_, i) => {
+                                const isFutureM = h > curH || (h === curH && i > curM);
+                                return <button key={i} data-active={m === i} onClick={() => setM(i)} disabled={isFutureM} style={{ ...DAYBTN_STYLE, width: "100%", background: m === i ? "linear-gradient(135deg,#7c3aed,#4f46e5)" : "transparent", color: m === i ? "white" : "var(--text-primary)", fontWeight: m === i ? 700 : 400, marginBottom: 4, height: 42, fontSize: 16, opacity: isFutureM ? 0.2 : 1, cursor: isFutureM ? "not-allowed" : "pointer" }}>{String(i).padStart(2, '0')}</button>
+                            })}
+                        </div>
+                    </div>
+                    <button onClick={doDone} style={{ ...LBTN_STYLE, width: "100%", marginTop: 20, background: "var(--accent-glass-bg-strong)", borderRadius: 12, padding: "12px", fontSize: 15 }}>Done</button>
+                </div>
+            </div>
+        </div>
+    );
+}
+
 function GlassyTimePicker({ value, onChange, label }) {
     const [open, setOpen] = useState(false);
     const ref = useRef();
-    const h = value ? parseInt(value.split(':')[0]) : 7;
-    const m = value ? parseInt(value.split(':')[1]) : 0;
 
     useEffect(() => {
         const out = (e) => { if (open && ref.current && !ref.current.contains(e.target)) setOpen(false); };
@@ -362,45 +409,17 @@ function GlassyTimePicker({ value, onChange, label }) {
         return () => document.removeEventListener("mousedown", out);
     }, [open]);
 
-    const select = (newH, newM) => {
-        const pad = (v) => String(v).padStart(2, '0');
-        onChange(`${pad(newH)}:${pad(newM)}`);
-    };
-
     return (
         <div style={{ position: "relative", width: "100%" }} ref={ref}>
             <div style={SL}>{label}</div>
-            <div 
+            <div
                 onClick={() => setOpen(!open)}
                 style={{ ...INP, cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 15 }}
             >
-                <span style={{ color: value ? "#e2e8f0" : "#475569" }}>{value || "00:00"}</span>
+                <span style={{ color: value ? "var(--text-primary)" : "var(--text-muted)" }}>{value || "00:00"}</span>
                 <span style={{ fontSize: 18, filter: "drop-shadow(0 0 5px rgba(124,58,237,0.5))" }}>🕒</span>
             </div>
-            {open && (
-                <div 
-                    onClick={() => setOpen(false)}
-                    style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.8)", backdropFilter: "blur(4px)", zIndex: 1400, display: "flex", alignItems: "center", justifyContent: "center", padding: 20, animation: "fadeIn .2s ease" }}>
-                    <div onClick={e => e.stopPropagation()}>
-                        <div style={{ background: "rgba(20, 15, 45, 0.95)", backdropFilter: "blur(24px)", border: "1px solid rgba(139, 92, 246, 0.35)", borderRadius: 24, padding: "24px", width: 280, color: "#e2e8f0", boxShadow: "0 25px 60px rgba(0,0,0,0.8)", animation: "slideUp .3s ease" }}>
-                            <div style={{ textAlign: "center", fontSize: 18, fontWeight: 700, marginBottom: 20, fontFamily: "'Playfair Display', serif", color: "#c4b5fd" }}>{label}</div>
-                            <div style={{ display: "flex", gap: 15, height: 220 }}>
-                                <div className="custom-scroll" style={{ flex: 1, overflowY: "auto", scrollbarWidth: "none" }}>
-                                    {Array.from({ length: 24 }, (_, i) => (
-                                        <button key={i} onClick={() => select(i, m)} style={{ ...DAYBTN_STYLE, width: "100%", background: h === i ? "linear-gradient(135deg,#7c3aed,#4f46e5)" : "transparent", marginBottom: 4, height: 42, fontSize: 16 }}>{String(i).padStart(2, '0')}</button>
-                                    ))}
-                                </div>
-                                <div className="custom-scroll" style={{ flex: 1, overflowY: "auto", scrollbarWidth: "none" }}>
-                                    {Array.from({ length: 60 }, (_, i) => (
-                                        <button key={i} onClick={() => select(h, i)} style={{ ...DAYBTN_STYLE, width: "100%", background: m === i ? "linear-gradient(135deg,#7c3aed,#4f46e5)" : "transparent", marginBottom: 4, height: 42, fontSize: 16 }}>{String(i).padStart(2, '0')}</button>
-                                    ))}
-                                </div>
-                            </div>
-                            <button onClick={() => setOpen(false)} style={{ ...LBTN_STYLE, width: "100%", marginTop: 20, background: "rgba(139,92,246,0.15)", borderRadius: 12, padding: "12px", fontSize: 15 }}>Done</button>
-                        </div>
-                    </div>
-                </div>
-            )}
+            {open && <TimeSelectModal value={value} onChange={onChange} onClose={() => setOpen(false)} label={label} />}
         </div>
     );
 }
@@ -430,23 +449,23 @@ function EntryModal({ existing, onSave, onClose }) {
     return (
         <div
             onClick={handleClose}
-            style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.75)", zIndex: 1200, display: "flex", alignItems: "flex-end", justifyContent: "center", animation: closing ? "fadeOutAnim .25s ease forwards" : "fadeIn .2s ease" }}>
+            style={{ position: "fixed", inset: 0, background: "var(--overlay-bg-light)", zIndex: 1200, display: "flex", alignItems: "flex-end", justifyContent: "center", animation: closing ? "fadeOutAnim .25s ease forwards" : "fadeIn .2s ease" }}>
             <div
                 onClick={(e) => e.stopPropagation()}
-                style={{ width: "100%", maxWidth: 430, background: "#160f35", borderRadius: "22px 22px 0 0", padding: "24px 22px 42px", border: "1px solid rgba(139,92,246,.35)", animation: closing ? "slideDownAnim .25s ease forwards" : "slideUp .25s ease" }}>
-                <div style={{ width: 36, height: 3, background: "rgba(255,255,255,.15)", borderRadius: 2, margin: "0 auto 22px" }} />
-                <div style={{ fontFamily: "'Playfair Display',serif", fontSize: 19, color: "#e2e8f0", marginBottom: 4 }}>
+                style={{ width: "100%", maxWidth: 430, background: "var(--sheet-bg)", borderRadius: "22px 22px 0 0", padding: "24px 22px 42px", border: "1px solid var(--accent-glass-border-strong)", animation: closing ? "slideDownAnim .25s ease forwards" : "slideUp .25s ease" }}>
+                <div style={{ width: 36, height: 3, background: "var(--grab-bar)", borderRadius: 2, margin: "0 auto 22px" }} />
+                <div style={{ fontFamily: "'Playfair Display',serif", fontSize: 19, color: "var(--text-primary)", marginBottom: 4 }}>
                     {existing ? "Edit Entry" : "Add Manual Entry"}
                 </div>
-                <div style={{ color: "#475569", fontSize: 12, marginBottom: 20 }}>Enter the actual time(s) you forgot to tap</div>
+                <div style={{ color: "var(--text-muted)", fontSize: 12, marginBottom: 20 }}>Enter the actual time(s) you forgot to tap</div>
 
                 <GlassyTimePicker label="Baby fell asleep at" value={st} onChange={setSt} />
 
                 <div style={{ margin: "5px 0 15px", display: "flex", alignItems: "center", gap: 8 }}>
                     <button onClick={() => setHasEnd(!hasEnd)} style={{
-                        background: hasEnd ? "rgba(139,92,246,.25)" : "rgba(255,255,255,.05)",
-                        border: hasEnd ? "1px solid rgba(139,92,246,.4)" : "1px solid rgba(255,255,255,.1)",
-                        borderRadius: 9, padding: "6px 14px", color: hasEnd ? "#c4b5fd" : "#64748b",
+                        background: hasEnd ? "var(--accent-glass-bg-strong)" : "var(--glass-bg)",
+                        border: hasEnd ? "1px solid var(--accent-glass-border-strong)" : "1px solid var(--glass-border)",
+                        borderRadius: 9, padding: "6px 14px", color: hasEnd ? "var(--accent-lighter)" : "var(--text-faint)",
                         fontSize: 12, cursor: "pointer", fontFamily: "inherit", fontWeight: hasEnd ? 700 : 400
                     }}>{hasEnd ? "✓ Baby woke up at…" : "+ Add wake-up time"}</button>
                 </div>
@@ -462,7 +481,7 @@ function EntryModal({ existing, onSave, onClose }) {
                 )}
 
                 {dur !== null && dur > 0 && !err && (
-                    <div style={{ marginTop: 12, padding: "10px 14px", background: "rgba(139,92,246,.1)", border: "1px solid rgba(139,92,246,.2)", borderRadius: 10, color: "#a78bfa", fontSize: 13 }}>
+                    <div style={{ marginTop: 12, padding: "10px 14px", background: "var(--accent-glass-bg)", border: "1px solid var(--accent-glass-border)", borderRadius: 10, color: "var(--accent-light)", fontSize: 13 }}>
                         Duration: <strong>{fmtDur(dur)}</strong>
                         {dur < 45 && <span style={{ color: "#f59e0b", marginLeft: 8, fontSize: 11 }}>Short nap – next WW will adjust</span>}
                         {dur >= 45 && <span style={{ color: "#4ade80", marginLeft: 8, fontSize: 11 }}>✓ Full sleep cycle</span>}
@@ -470,8 +489,8 @@ function EntryModal({ existing, onSave, onClose }) {
                 )}
 
                 <div style={{ display: "flex", gap: 10, marginTop: 22 }}>
-                    <button onClick={handleClose} style={{ flex: 1, padding: "13px", borderRadius: 13, border: "1px solid rgba(255,255,255,.09)", background: "rgba(255,255,255,.04)", color: "#64748b", fontSize: 14, cursor: "pointer", fontFamily: "inherit" }}>Cancel</button>
-                    <button onClick={doSave} style={{ flex: 2, padding: "13px", borderRadius: 13, border: "none", background: "linear-gradient(135deg,#7c3aed,#4f46e5)", color: "white", fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", boxShadow: "0 4px 18px rgba(124,58,237,.4)" }}>Save Entry</button>
+                    <button onClick={handleClose} style={{ flex: 1, padding: "13px", borderRadius: 13, border: "1px solid var(--glass-border)", background: "var(--glass-bg)", color: "var(--text-faint)", fontSize: 14, cursor: "pointer", fontFamily: "inherit" }}>Cancel</button>
+                    <button onClick={doSave} style={{ flex: 2, padding: "13px", borderRadius: 13, border: "none", background: "var(--accent-gradient)", color: "white", fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", boxShadow: "var(--btn-save-shadow)" }}>Save Entry</button>
                 </div>
             </div>
         </div>
@@ -485,14 +504,14 @@ function ConfidenceModal({ level, onClose }) {
         low: "Still learning! We need a few more nap logs to accurately dial in the personal offset for your baby's unique rhythm."
     };
     return (
-        <div 
+        <div
             onClick={onClose}
-            style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.8)", backdropFilter: "blur(6px)", zIndex: 1500, display: "flex", alignItems: "center", justifyContent: "center", padding: 20, animation: "fadeIn .2s ease" }}>
-            <div onClick={e => e.stopPropagation()} style={{ background: "rgba(20, 15, 45, 0.95)", backdropFilter: "blur(24px)", border: "1px solid rgba(139, 92, 246, 0.4)", borderRadius: 24, padding: "28px", width: 300, color: "#e2e8f0", boxShadow: "0 25px 60px rgba(0,0,0,0.9)", animation: "slideUp .3s ease", textAlign: "center" }}>
+            style={{ position: "fixed", inset: 0, background: "var(--overlay-bg)", backdropFilter: "blur(6px)", zIndex: 1500, display: "flex", alignItems: "center", justifyContent: "center", padding: 20, animation: "fadeIn .2s ease" }}>
+            <div onClick={e => e.stopPropagation()} style={{ background: "var(--modal-bg)", backdropFilter: "blur(24px)", border: "1px solid var(--accent-glass-border-strong)", borderRadius: 24, padding: "28px", width: 300, color: "var(--text-primary)", boxShadow: "0 25px 60px rgba(0,0,0,0.9)", animation: "slideUp .3s ease", textAlign: "center" }}>
                 <div style={{ fontSize: 32, marginBottom: 15 }}>{level === "high" ? "🌟" : level === "medium" ? "📈" : "🏗️"}</div>
-                <div style={{ fontWeight: 800, fontSize: 18, fontFamily: "'Playfair Display', serif", color: "#c4b5fd", marginBottom: 12, textTransform: "capitalize" }}>{level} Confidence</div>
-                <div style={{ fontSize: 13, color: "#94a3b8", lineHeight: 1.6, marginBottom: 20 }}>{desc[level]}</div>
-                <button onClick={onClose} style={{ ...LBTN_STYLE, width: "100%", background: "rgba(139,92,246,0.15)", borderRadius: 12, padding: "12px", fontSize: 15 }}>Close</button>
+                <div style={{ fontWeight: 800, fontSize: 18, fontFamily: "'Playfair Display', serif", color: "var(--accent-lighter)", marginBottom: 12, textTransform: "capitalize" }}>{level} Confidence</div>
+                <div style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.6, marginBottom: 20 }}>{desc[level]}</div>
+                <button onClick={onClose} style={{ ...LBTN_STYLE, width: "100%", background: "var(--accent-glass-bg-strong)", borderRadius: 12, padding: "12px", fontSize: 15 }}>Close</button>
             </div>
         </div>
     );
@@ -503,13 +522,13 @@ function WeekSlider({ value, onChange }) {
     const months = (value / 4.33).toFixed(1);
     return <div>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 12 }}>
-            <div><span style={{ fontSize: 30, fontWeight: 800, color: "#c4b5fd" }}>{value}</span><span style={{ color: "#475569", fontSize: 13, marginLeft: 5 }}>weeks</span></div>
-            <div style={{ background: "rgba(139,92,246,.15)", border: "1px solid rgba(139,92,246,.25)", borderRadius: 10, padding: "5px 13px", color: "#a78bfa", fontSize: 13, fontWeight: 600 }}>≈ {months} months</div>
+            <div><span style={{ fontSize: 30, fontWeight: 800, color: "var(--accent-lighter)" }}>{value}</span><span style={{ color: "var(--text-muted)", fontSize: 13, marginLeft: 5 }}>weeks</span></div>
+            <div style={{ background: "var(--pill-bg)", border: "1px solid var(--pill-border)", borderRadius: 10, padding: "5px 13px", color: "var(--accent-light)", fontSize: 13, fontWeight: 600 }}>≈ {months} months</div>
         </div>
         <input type="range" min={1} max={52} value={value} onChange={e => onChange(+e.target.value)}
             style={{ width: "100%", accentColor: "#7c3aed", height: 6, cursor: "pointer" }} />
         <div style={{ display: "flex", justifyContent: "space-between", marginTop: 5 }}>
-            {["1w", "13w", "26w", "39w", "52w"].map(l => <span key={l} style={{ color: "#334155", fontSize: 11 }}>{l}</span>)}
+            {["1w", "13w", "26w", "39w", "52w"].map(l => <span key={l} style={{ color: "var(--text-dim)", fontSize: 11 }}>{l}</span>)}
         </div>
     </div>;
 }
@@ -517,21 +536,21 @@ function WeekSlider({ value, onChange }) {
 // ── Nap row ───────────────────────────────────────────────────────────────────
 function NapRow({ nap, now, isActive, actual }) {
     const pct = isActive ? Math.min(100, Math.max(0, ((now - new Date(nap.start)) / (new Date(nap.end) - new Date(nap.start))) * 100)) : 0;
-    return <div style={{ position: "relative", overflow: "hidden", background: isActive ? "rgba(139,92,246,.13)" : "rgba(255,255,255,.04)", border: isActive ? "1px solid rgba(139,92,246,.38)" : "1px solid rgba(255,255,255,.07)", borderRadius: 15, padding: "13px 15px", marginBottom: 9, transition: "all .3s" }}>
+    return <div style={{ position: "relative", overflow: "hidden", background: isActive ? "var(--accent-glass-bg-active)" : "var(--glass-bg)", border: isActive ? "1px solid var(--accent-glass-border-active)" : "1px solid var(--glass-border)", borderRadius: 15, padding: "13px 15px", marginBottom: 9, transition: "all .3s" }}>
         {isActive && <div style={{ position: "absolute", top: 0, left: 0, height: "100%", width: `${pct}%`, background: "linear-gradient(90deg,rgba(139,92,246,.2),transparent)", transition: "width 10s linear", borderRadius: 15, pointerEvents: "none" }} />}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", position: "relative" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <div style={{ width: 32, height: 32, borderRadius: "50%", flexShrink: 0, background: isActive ? "rgba(139,92,246,.35)" : "rgba(255,255,255,.07)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 700, color: isActive ? "#c4b5fd" : "#64748b" }}>{nap.index}</div>
+                <div style={{ width: 32, height: 32, borderRadius: "50%", flexShrink: 0, background: isActive ? "var(--accent-glass-bg-strong)" : "var(--glass-bg-hover)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 700, color: isActive ? "var(--accent-lighter)" : "var(--text-faint)" }}>{nap.index}</div>
                 <div>
-                    <div style={{ fontSize: 14, fontWeight: 600, color: "#e2e8f0" }}>
+                    <div style={{ fontSize: 14, fontWeight: 600, color: "var(--text-primary)" }}>
                         Nap {nap.index}{nap.isLast ? " · Last" : ""}
-                        {isActive && <span style={{ marginLeft: 8, fontSize: 10, color: "#a78bfa", background: "rgba(139,92,246,.2)", padding: "2px 7px", borderRadius: 20 }}>● Now</span>}
+                        {isActive && <span style={{ marginLeft: 8, fontSize: 10, color: "var(--accent-light)", background: "var(--accent-glass-bg)", padding: "2px 7px", borderRadius: 20 }}>● Now</span>}
                     </div>
-                    <div style={{ fontSize: 12, color: "#475569", marginTop: 1 }}>{fmt(nap.start)} → {fmt(nap.end)} <span style={{ color: "#334155" }}>· WW {fmtDur(nap.ww)}</span></div>
+                    <div style={{ fontSize: 12, color: "var(--text-muted)", marginTop: 1 }}>{fmt(nap.start)} → {fmt(nap.end)} <span style={{ color: "var(--text-dim)" }}>· WW {fmtDur(nap.ww)}</span></div>
                 </div>
             </div>
             <div style={{ textAlign: "right", flexShrink: 0 }}>
-                <div style={{ fontSize: 13, fontWeight: 700, color: isActive ? "#a78bfa" : "#475569" }}>~{fmtDur(nap.dur)}</div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: isActive ? "var(--accent-light)" : "var(--text-muted)" }}>~{fmtDur(nap.dur)}</div>
                 {actual?.duration && <div style={{ fontSize: 11, color: "#22d3ee", marginTop: 1 }}>actual {fmtDur(actual.duration)}</div>}
             </div>
         </div>
@@ -558,6 +577,8 @@ export default function App() {
     const [learner, setLearner] = useState({ offset: 0, history: [] });
     const [showConf, setShowConf] = useState(false);
     const [ready, setReady] = useState(false);
+    const [isEditingStart, setIsEditingStart] = useState(false);
+    const [theme, setTheme] = useState(() => storage.get('ld_theme') || 'dark');
 
     useEffect(() => {
         const d = load();
@@ -587,6 +608,7 @@ export default function App() {
     }, []);
     useEffect(() => { const id = setInterval(() => setNow(new Date()), 1000); return () => clearInterval(id); }, []);
     useEffect(() => { setSched(buildSchedule(wakeTime, weeks, events, useStretch, learner)); }, [wakeTime, weeks, events, useStretch, learner]);
+    useEffect(() => { document.documentElement.setAttribute('data-theme', theme); storage.set('ld_theme', theme); }, [theme]);
 
     function persistAll(evts, wks = weeks, wk = wakeStr, activePayload = null, dDate = dueDate, str = useStretch, lrner = learner) {
         const today = new Date().toDateString();
@@ -608,6 +630,20 @@ export default function App() {
         const newLearner = { offset: newOffset, history: newHistory };
         setLearner(newLearner);
         return newLearner;
+    }
+
+    function changeActiveStart(newTimeStr) {
+        if (!sleepStart) return;
+        const [h, m] = newTimeStr.split(":").map(Number);
+        const next = new Date(sleepStart);
+        next.setHours(h, m, 0, 0);
+        setSleepStart(next);
+        save({
+            history,
+            settings: { weeks, wake: wakeStr, dueDate, useStretch, learner },
+            activeSleep: { sleeping: true, sleepStart: next }
+        });
+        setIsEditingStart(false);
     }
 
     function handleTap() {
@@ -649,7 +685,7 @@ export default function App() {
         setDeletingId(id);
         setTimeout(() => {
             const evts = events.filter((e) => e.id !== id);
-            setEvents(evts); 
+            setEvents(evts);
             persistAll(evts);
             setDeletingId(null);
         }, 300);
@@ -706,7 +742,7 @@ export default function App() {
     const TABS = [["today", "Today"], ["history", "History"], ["settings", "Settings"], ["logic", "Guide"]];
 
     return (
-        <div style={{ minHeight: "100vh", background: "linear-gradient(155deg,#080516 0%,#120d2c 50%,#0a1525 100%)", fontFamily: "'DM Sans','Segoe UI',sans-serif", color: "#e2e8f0", position: "relative", overflow: "hidden" }}>
+        <div style={{ minHeight: "100vh", background: "var(--bg-gradient)", fontFamily: "'DM Sans','Segoe UI',sans-serif", color: "var(--text-primary)", position: "relative", overflow: "hidden", transition: "background 0.4s ease" }}>
             <style>{`
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap');
         *{box-sizing:border-box;margin:0;padding:0;}
@@ -725,10 +761,18 @@ export default function App() {
         input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;background:#7c3aed;border-radius:50%;cursor:pointer;box-shadow:0 0 8px rgba(124,58,237,.5);}
       `}</style>
             <Stars />
-            <div style={{ position: "absolute", top: -80, right: -80, width: 320, height: 320, borderRadius: "50%", background: "radial-gradient(circle,rgba(124,58,237,.14) 0%,transparent 70%)", pointerEvents: "none" }} />
+            <div style={{ position: "absolute", top: -80, right: -80, width: 320, height: 320, borderRadius: "50%", background: "var(--orb-bg)", pointerEvents: "none" }} />
 
             {modal && <EntryModal existing={editIdx !== null ? events[editIdx] : null} onSave={saveModal} onClose={() => { setModal(false); setEditIdx(null); }} />}
             {showConf && <ConfidenceModal level={sched?.confidence || "low"} onClose={() => setShowConf(false)} />}
+            {isEditingStart && sleeping && (
+                <TimeSelectModal
+                    label="Correct Start Time"
+                    value={toInput(sleepStart)}
+                    onChange={changeActiveStart}
+                    onClose={() => setIsEditingStart(false)}
+                />
+            )}
 
             <div style={{ maxWidth: 430, margin: "0 auto", padding: "0 16px 60px", position: "relative" }}>
 
@@ -740,76 +784,97 @@ export default function App() {
                                 <Logo size={42} />
                             </div>
                             <div>
-                                <div style={{ fontFamily: "'Playfair Display',serif", fontSize: 23, fontWeight: 700, background: "linear-gradient(125deg,#e2e8f0,#a78bfa)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", lineHeight: 1.1 }}>Little Dreamz</div>
-                                <div style={{ color: "#475569", fontSize: 11, marginTop: 2 }}>Week {weeks} · Base {fmtDur(baseWWVal - 10)} – {fmtDur(baseWWVal + 10)}</div>
+                                <div style={{ fontFamily: "'Playfair Display',serif", fontSize: 23, fontWeight: 700, background: "var(--title-gradient)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", lineHeight: 1.1 }}>Little Dreamz</div>
+                                <div style={{ color: "var(--text-muted)", fontSize: 11, marginTop: 2 }}>Week {weeks} · Base {fmtDur(baseWWVal - 10)} – {fmtDur(baseWWVal + 10)}</div>
                             </div>
                         </div>
                         <div style={{ textAlign: "right" }}>
-                            <div style={{ color: "#334155", fontSize: 10, letterSpacing: ".06em" }}>NOW</div>
-                            <div style={{ color: "#c4b5fd", fontSize: 15, fontWeight: 700 }}>{fmt(now)}</div>
+                            <div style={{ color: "var(--text-dim)", fontSize: 10, letterSpacing: ".06em" }}>NOW</div>
+                            <div style={{ color: "var(--accent-lighter)", fontSize: 15, fontWeight: 700 }}>{fmt(now)}</div>
                         </div>
                     </div>
                 </div>
 
                 {/* Tabs */}
-                <div style={{ display: "flex", gap: 3, background: "rgba(255,255,255,.04)", borderRadius: 14, padding: 4, marginBottom: 20, border: "1px solid rgba(255,255,255,.07)" }}>
+                <div style={{ display: "flex", gap: 3, background: "var(--glass-bg)", borderRadius: 14, padding: 4, marginBottom: 20, border: "1px solid var(--glass-border)" }}>
                     {TABS.map(([k, l]) => (
-                        <button key={k} onClick={() => setTab(k)} style={{ flex: 1, padding: "9px 0", borderRadius: 10, border: "none", background: tab === k ? "rgba(124,58,237,.32)" : "transparent", color: tab === k ? "#c4b5fd" : "#475569", fontWeight: tab === k ? 700 : 400, fontSize: 13, cursor: "pointer", transition: "all .2s", boxShadow: tab === k ? "0 2px 10px rgba(124,58,237,.25)" : "none", fontFamily: "inherit" }}>{l}</button>
+                        <button key={k} onClick={() => setTab(k)} style={{ flex: 1, padding: "9px 0", borderRadius: 10, border: "none", background: tab === k ? "var(--accent-tab-bg)" : "transparent", color: tab === k ? "var(--accent-lighter)" : "var(--text-muted)", fontWeight: tab === k ? 700 : 400, fontSize: 13, cursor: "pointer", transition: "all .2s", boxShadow: tab === k ? "var(--accent-tab-shadow)" : "none", fontFamily: "inherit" }}>{l}</button>
                     ))}
                 </div>
 
                 {/* TODAY */}
                 {tab === "today" && <div style={{ animation: "slideUp .3s ease" }}>
-                    {tip && <div style={{ background: "rgba(139,92,246,.1)", border: "1px solid rgba(139,92,246,.22)", borderRadius: 13, padding: "11px 15px", marginBottom: 16, fontSize: 13, color: "#c4b5fd", lineHeight: 1.5 }}>
+                    {tip && <div style={{ background: "var(--accent-glass-bg)", border: "1px solid var(--accent-glass-border)", borderRadius: 13, padding: "11px 15px", marginBottom: 16, fontSize: 13, color: "var(--accent-lighter)", lineHeight: 1.5 }}>
                         {tip}
-                        {sched?.confidence && <span onClick={() => setShowConf(true)} style={{ cursor: "pointer", marginLeft: 8, fontSize: 10, background: sched.confidence === "high" ? "rgba(34,197,94,.2)" : sched.confidence === "medium" ? "rgba(234,179,8,.2)" : "rgba(239,68,68,.2)", color: sched.confidence === "high" ? "#4ade80" : sched.confidence === "medium" ? "#facc15" : "#f87171", padding: "2px 6px", borderRadius: 4, textTransform: "uppercase", fontWeight: 700 }}>{sched.confidence} Confidence</span>}
+                        {sched?.confidence && <span onClick={() => setShowConf(true)} style={{ cursor: "pointer", marginLeft: 8, fontSize: 10, background: `var(--conf-${sched.confidence}-bg)`, color: `var(--conf-${sched.confidence}-text)`, padding: "2px 6px", borderRadius: 4, textTransform: "uppercase", fontWeight: 700, whiteSpace: "nowrap", display: "inline-block" }}>{sched.confidence} Confidence</span>}
                     </div>}
 
                     {/* Tap button */}
-                    <div style={{ display: "flex", alignItems: "center", gap: 15, marginBottom: 18, background: "rgba(255,255,255,.03)", border: "1px solid rgba(255,255,255,.07)", borderRadius: 18, padding: "16px 18px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 15, marginBottom: 18, background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: 18, padding: "16px 18px" }}>
                         <div style={{ position: "relative", flexShrink: 0 }}>
                             {sleeping && <>
-                                <div style={{ position: "absolute", inset: -7, borderRadius: "50%", border: "2px solid rgba(139,92,246,.5)", animation: "ring 1.7s ease-out infinite", pointerEvents: "none" }} />
-                                <div style={{ position: "absolute", inset: -7, borderRadius: "50%", border: "2px solid rgba(139,92,246,.3)", animation: "ring 1.7s ease-out infinite", animationDelay: ".45s", pointerEvents: "none" }} />
+                                <div style={{ position: "absolute", inset: -7, borderRadius: "50%", border: "2px solid var(--ring-color-1)", animation: "ring 1.7s ease-out infinite", pointerEvents: "none" }} />
+                                <div style={{ position: "absolute", inset: -7, borderRadius: "50%", border: "2px solid var(--ring-color-2)", animation: "ring 1.7s ease-out infinite", animationDelay: ".45s", pointerEvents: "none" }} />
                             </>}
-                            <button onClick={handleTap} style={{ width: 70, height: 70, borderRadius: "50%", border: "none", cursor: "pointer", background: sleeping ? "linear-gradient(135deg,#7c3aed,#4f46e5)" : "linear-gradient(135deg,#1e293b,#334155)", boxShadow: sleeping ? "0 0 28px rgba(124,58,237,.5)" : "0 4px 14px rgba(0,0,0,.4)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 4, animation: sleeping ? "pulse 2s ease-in-out infinite" : "none", transition: "all .3s", fontFamily: "inherit" }}>
+                            <button onClick={handleTap} style={{ width: 70, height: 70, borderRadius: "50%", border: "none", cursor: "pointer", background: sleeping ? "var(--accent-gradient)" : "var(--btn-off-bg)", boxShadow: sleeping ? "0 0 28px var(--accent-glow)" : "var(--btn-off-shadow)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 4, animation: sleeping ? "pulse 2s ease-in-out infinite" : "none", transition: "all .3s", fontFamily: "inherit" }}>
                                 <span style={{ fontSize: 20 }}>{sleeping ? "🌙" : "☀️"}</span>
-                                <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: ".06em", color: sleeping ? "#e2e8f0" : "#64748b" }}>{sleeping ? "AWAKE" : "ASLEEP"}</span>
+                                <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: ".06em", color: sleeping ? "#e2e8f0" : "var(--text-faint)" }}>{sleeping ? "AWAKE" : "ASLEEP"}</span>
                             </button>
                         </div>
                         <div style={{ flex: 1 }}>
-                            <div style={{ fontSize: 14, fontWeight: 600, color: "#e2e8f0", marginBottom: 3 }}>{sleeping ? "Baby is sleeping" : "Tap when baby sleeps"}</div>
-                            <div style={{ fontSize: 12, color: "#475569" }}>{sleeping ? `Since ${fmt(sleepStart)} · ${fmtHMS(sleepStart, now)} elapsed` : "Or add a missed entry below"}</div>
+                            <div style={{ fontSize: 14, fontWeight: 600, color: "var(--text-primary)", marginBottom: 3 }}>{sleeping ? "Baby is sleeping" : "Tap when baby sleeps"}</div>
+                            <div style={{ fontSize: 12, color: "var(--text-muted)" }}>
+                                {sleeping ? (
+                                    <span style={{ display: "inline-flex", alignItems: "center", gap: 4 }}>
+                                        Since
+                                        <span
+                                            onClick={() => setIsEditingStart(true)}
+                                            style={{
+                                                color: "var(--accent-lighter)",
+                                                textDecoration: "none",
+                                                cursor: "pointer",
+                                                background: "var(--accent-glass-bg)",
+                                                padding: "1px 5px",
+                                                borderRadius: 4,
+                                                fontWeight: 600
+                                            }}
+                                        >
+                                            {fmt(sleepStart)}
+                                        </span>
+                                        · {fmtHMS(sleepStart, now)} elapsed
+                                    </span>
+                                ) : "Or add a missed entry below"}
+                            </div>
                         </div>
                     </div>
 
                     {/* Manual entry button */}
-                    <button onClick={() => { setEditIdx(null); setModal(true); }} style={{ width: "100%", padding: "11px", borderRadius: 12, border: "1px dashed rgba(139,92,246,.33)", background: "rgba(139,92,246,.06)", color: "#7c3aed", fontSize: 13, fontWeight: 600, cursor: "pointer", marginBottom: 20, fontFamily: "inherit" }}>
+                    <button onClick={() => { setEditIdx(null); setModal(true); }} style={{ width: "100%", padding: "11px", borderRadius: 12, border: "1px dashed var(--dashed-border)", background: "var(--dashed-bg)", color: "var(--accent)", fontSize: 13, fontWeight: 600, cursor: "pointer", marginBottom: 20, fontFamily: "inherit" }}>
                         + Add forgotten / missed entry
                     </button>
 
                     {events.length > 0 && <>
                         <div style={SL}>Logged Today ({events.length})</div>
                         {events.map((ev, i) => (
-                            <div key={ev.id || i} style={{ 
-                                background: "rgba(255,255,255,.04)", 
-                                border: "1px solid rgba(255,255,255,.07)", 
-                                borderRadius: 12, 
-                                padding: "11px 14px", 
-                                marginBottom: 7, 
-                                display: "flex", 
-                                justifyContent: "space-between", 
-                                alignItems: "center", 
+                            <div key={ev.id || i} style={{
+                                background: "var(--glass-bg)",
+                                border: "1px solid var(--glass-border)",
+                                borderRadius: 12,
+                                padding: "11px 14px",
+                                marginBottom: 7,
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "center",
                                 animation: ev.id === deletingId ? "fadeOut 0.35s forwards" : "slideUp 0.3s ease-out",
                                 pointerEvents: ev.id === deletingId ? "none" : "auto",
                                 overflow: "hidden"
                             }}>
                                 <div>
-                                    <div style={{ fontSize: 13, color: "#94a3b8", fontWeight: 600 }}>Nap {i + 1}{ev.manual ? " ✏️" : ""}</div>
-                                    <div style={{ fontSize: 12, color: "#475569", marginTop: 2 }}>{fmt(ev.start)}{ev.end ? ` → ${fmt(ev.end)}` : " → ongoing?"}</div>
+                                    <div style={{ fontSize: 13, color: "var(--text-secondary)", fontWeight: 600 }}>Nap {i + 1}{ev.manual ? " ✏️" : ""}</div>
+                                    <div style={{ fontSize: 12, color: "var(--text-muted)", marginTop: 2 }}>{fmt(ev.start)}{ev.end ? ` → ${fmt(ev.end)}` : " → ongoing?"}</div>
                                 </div>
                                 <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
-                                    {ev.duration != null && <span style={{ fontSize: 13, fontWeight: 700, color: ev.duration >= 45 ? "#a78bfa" : "#f59e0b" }}>{fmtDur(ev.duration)}</span>}
+                                    {ev.duration != null && <span style={{ fontSize: 13, fontWeight: 700, color: ev.duration >= 45 ? "var(--accent-light)" : "var(--color-warning)" }}>{fmtDur(ev.duration)}</span>}
                                     <button onClick={() => { setEditIdx(i); setModal(true); }} style={IB}>✏️</button>
                                     <button onClick={() => delEvent(i)} style={DEL_BTN}>✕</button>
                                 </div>
@@ -821,67 +886,67 @@ export default function App() {
                     {sched && <>
                         <div style={{ ...SL, marginTop: events.length ? 16 : 0 }}>Predicted Schedule</div>
                         {sched.schedule.map(n => <NapRow key={n.index} nap={n} now={now} isActive={activeNap?.index === n.index} actual={events[n.index - 1]} />)}
-                        <div style={{ background: "rgba(251,191,36,.07)", border: "1px solid rgba(251,191,36,.18)", borderRadius: 15, padding: "13px 15px", marginTop: 4, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        <div style={{ background: "var(--bedtime-bg)", border: "1px solid var(--bedtime-border)", borderRadius: 15, padding: "13px 15px", marginTop: 4, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                                 <span style={{ fontSize: 20 }}>🌙</span>
                                 <div>
-                                    <div style={{ color: "#fbbf24", fontSize: 14, fontWeight: 700 }}>Bedtime</div>
-                                    <div style={{ color: "#78716c", fontSize: 12 }}>Last WW: {fmtDur(sched.lww)}</div>
+                                    <div style={{ color: "var(--bedtime-color)", fontSize: 14, fontWeight: 700 }}>Bedtime</div>
+                                    <div style={{ color: "var(--bedtime-muted)", fontSize: 12 }}>Last WW: {fmtDur(sched.lww)}</div>
                                 </div>
                             </div>
-                            <div style={{ color: "#fbbf24", fontSize: 20, fontWeight: 700 }}>{fmt(sched.bedtime)}</div>
+                            <div style={{ color: "var(--bedtime-color)", fontSize: 20, fontWeight: 700 }}>{fmt(sched.bedtime)}</div>
                         </div>
                     </>}
                 </div>}
 
                 {/* HISTORY */}
                 {tab === "history" && <div style={{ animation: "slideUp .3s ease" }}>
-                    <div style={{ background: "rgba(139,92,246,.08)", border: "1px solid rgba(139,92,246,.25)", borderRadius: 19, padding: "20px", marginBottom: 20 }}>
-                        <div style={{ color: "#c4b5fd", fontSize: 13, fontWeight: 700, marginBottom: 15, display: "flex", alignItems: "center", gap: 8 }}>
+                    <div style={{ background: "var(--accent-glass-bg)", border: "1px solid var(--accent-glass-border)", borderRadius: 19, padding: "20px", marginBottom: 20 }}>
+                        <div style={{ color: "var(--accent-lighter)", fontSize: 13, fontWeight: 700, marginBottom: 15, display: "flex", alignItems: "center", gap: 8 }}>
                             <span>🧠</span> Prime AI with Past Patterns
                         </div>
                         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 15 }}>
                             {(() => {
                                 const base = baseWakeWindow(weeks);
                                 const [naps, dur] = getWWInfo(weeks);
-                                
+
                                 // Internal local state for this "Prime" form
                                 if (!window._hForm) window._hForm = { ww: base, dur: dur, naps: naps };
                                 const f = window._hForm;
-                                
+
                                 const wwErr = Math.abs(f.ww - base) > 25;
                                 const durErr = Math.abs(f.dur - dur) > 30;
 
                                 return <>
-                                    <div style={{ background: "rgba(255,255,255,.05)", borderRadius: 12, padding: "12px", border: wwErr ? "1px solid rgba(239, 68, 68, 0.4)" : "1px solid transparent" }}>
-                                        <div style={{ color: "#475569", fontSize: 10, textTransform: "uppercase", marginBottom: 6 }}>Actual Avg WW</div>
+                                    <div style={{ background: "var(--glass-bg-hover)", borderRadius: 12, padding: "12px", border: wwErr ? "1px solid rgba(239, 68, 68, 0.4)" : "1px solid transparent" }}>
+                                        <div style={{ color: "var(--text-muted)", fontSize: 10, textTransform: "uppercase", marginBottom: 6 }}>Actual Avg WW</div>
                                         <div style={{ display: "flex", alignItems: "center", gap: 3 }}>
-                                            <input type="number" defaultValue={Math.floor(f.ww / 60)} onChange={e => { window._hForm.ww = (parseInt(e.target.value) || 0) * 60 + (window._hForm.ww % 60); setNow(new Date()); }} style={{ background: "none", border: "none", color: wwErr ? "#f87171" : "#c4b5fd", fontSize: 18, fontWeight: 700, width: 30, outline: "none", textAlign: "right" }} />
-                                            <span style={{ fontSize: 11, color: "#475569", fontWeight: 700 }}>h</span>
-                                            <input type="number" defaultValue={f.ww % 60} onChange={e => { window._hForm.ww = (Math.floor(window._hForm.ww / 60) * 60) + (parseInt(e.target.value) || 0); setNow(new Date()); }} style={{ background: "none", border: "none", color: wwErr ? "#f87171" : "#c4b5fd", fontSize: 18, fontWeight: 700, width: 35, outline: "none", textAlign: "right" }} />
-                                            <span style={{ fontSize: 11, color: "#475569", fontWeight: 700 }}>m</span>
+                                            <input type="number" defaultValue={Math.floor(f.ww / 60)} onChange={e => { window._hForm.ww = (parseInt(e.target.value) || 0) * 60 + (window._hForm.ww % 60); setNow(new Date()); }} style={{ background: "none", border: "none", color: wwErr ? "#f87171" : "var(--accent-lighter)", fontSize: 18, fontWeight: 700, width: 30, outline: "none", textAlign: "right" }} />
+                                            <span style={{ fontSize: 11, color: "var(--text-muted)", fontWeight: 700 }}>h</span>
+                                            <input type="number" defaultValue={f.ww % 60} onChange={e => { window._hForm.ww = (Math.floor(window._hForm.ww / 60) * 60) + (parseInt(e.target.value) || 0); setNow(new Date()); }} style={{ background: "none", border: "none", color: wwErr ? "#f87171" : "var(--accent-lighter)", fontSize: 18, fontWeight: 700, width: 35, outline: "none", textAlign: "right" }} />
+                                            <span style={{ fontSize: 11, color: "var(--text-muted)", fontWeight: 700 }}>m</span>
                                         </div>
                                         {wwErr && <div style={{ fontSize: 9, color: "#f87171", marginTop: 4 }}>⚠️ High deviation from {base}m</div>}
                                     </div>
-                                    <div style={{ background: "rgba(255,255,255,.05)", borderRadius: 12, padding: "12px", border: durErr ? "1px solid rgba(239, 68, 68, 0.4)" : "1px solid transparent" }}>
-                                        <div style={{ color: "#475569", fontSize: 10, textTransform: "uppercase", marginBottom: 6 }}>Actual Avg Nap</div>
+                                    <div style={{ background: "var(--glass-bg-hover)", borderRadius: 12, padding: "12px", border: durErr ? "1px solid rgba(239, 68, 68, 0.4)" : "1px solid transparent" }}>
+                                        <div style={{ color: "var(--text-muted)", fontSize: 10, textTransform: "uppercase", marginBottom: 6 }}>Actual Avg Nap</div>
                                         <div style={{ display: "flex", alignItems: "center", gap: 3 }}>
-                                            <input type="number" defaultValue={Math.floor(f.dur / 60)} onChange={e => { window._hForm.dur = (parseInt(e.target.value) || 0) * 60 + (window._hForm.dur % 60); setNow(new Date()); }} style={{ background: "none", border: "none", color: durErr ? "#f87171" : "#c4b5fd", fontSize: 18, fontWeight: 700, width: 30, outline: "none", textAlign: "right" }} />
-                                            <span style={{ fontSize: 11, color: "#475569", fontWeight: 700 }}>h</span>
-                                            <input type="number" defaultValue={f.dur % 60} onChange={e => { window._hForm.dur = (Math.floor(window._hForm.dur / 60) * 60) + (parseInt(e.target.value) || 0); setNow(new Date()); }} style={{ background: "none", border: "none", color: durErr ? "#f87171" : "#c4b5fd", fontSize: 18, fontWeight: 700, width: 35, outline: "none", textAlign: "right" }} />
-                                            <span style={{ fontSize: 11, color: "#475569", fontWeight: 700 }}>m</span>
+                                            <input type="number" defaultValue={Math.floor(f.dur / 60)} onChange={e => { window._hForm.dur = (parseInt(e.target.value) || 0) * 60 + (window._hForm.dur % 60); setNow(new Date()); }} style={{ background: "none", border: "none", color: durErr ? "#f87171" : "var(--accent-lighter)", fontSize: 18, fontWeight: 700, width: 30, outline: "none", textAlign: "right" }} />
+                                            <span style={{ fontSize: 11, color: "var(--text-muted)", fontWeight: 700 }}>h</span>
+                                            <input type="number" defaultValue={f.dur % 60} onChange={e => { window._hForm.dur = (Math.floor(window._hForm.dur / 60) * 60) + (parseInt(e.target.value) || 0); setNow(new Date()); }} style={{ background: "none", border: "none", color: durErr ? "#f87171" : "var(--accent-lighter)", fontSize: 18, fontWeight: 700, width: 35, outline: "none", textAlign: "right" }} />
+                                            <span style={{ fontSize: 11, color: "var(--text-muted)", fontWeight: 700 }}>m</span>
                                         </div>
                                     </div>
-                                    <div style={{ background: "rgba(255,255,255,.05)", borderRadius: 12, padding: "12px" }}>
-                                        <div style={{ color: "#475569", fontSize: 10, textTransform: "uppercase", marginBottom: 4 }}>Naps/Day</div>
-                                        <input type="number" defaultValue={f.naps} onChange={e => { window._hForm.naps = parseInt(e.target.value) || naps; setNow(new Date()); }} style={{ background: "none", border: "none", color: "#c4b5fd", fontSize: 18, fontWeight: 700, width: "100%", outline: "none" }} />
+                                    <div style={{ background: "var(--glass-bg-hover)", borderRadius: 12, padding: "12px" }}>
+                                        <div style={{ color: "var(--text-muted)", fontSize: 10, textTransform: "uppercase", marginBottom: 4 }}>Naps/Day</div>
+                                        <input type="number" defaultValue={f.naps} onChange={e => { window._hForm.naps = parseInt(e.target.value) || naps; setNow(new Date()); }} style={{ background: "none", border: "none", color: "var(--accent-lighter)", fontSize: 18, fontWeight: 700, width: "100%", outline: "none" }} />
                                     </div>
-                                    <button 
+                                    <button
                                         onClick={() => {
                                             const error = window._hForm.ww - base;
                                             const newL = { offset: learner.offset + (error * 0.3), history: [...learner.history, error, error] };
                                             setLearner(newL);
-                                            const fakeEntry = { date: `sim-${Date.now()}`, sleepEvents: Array.from({length: window._hForm.naps}).map((_,i)=>({id:i, start: new Date(), end: new Date(), duration: window._hForm.dur})), napsCompleted: window._hForm.naps, simulated: true };
+                                            const fakeEntry = { date: `sim-${Date.now()}`, sleepEvents: Array.from({ length: window._hForm.naps }).map((_, i) => ({ id: i, start: new Date(), end: new Date(), duration: window._hForm.dur })), napsCompleted: window._hForm.naps, simulated: true };
                                             setHistory(h => [fakeEntry, ...h]);
                                             save({ history: [fakeEntry, ...history], settings: { weeks, wake: wakeStr, learner: newL } });
                                             window._hForm = null;
@@ -892,37 +957,37 @@ export default function App() {
                                 </>;
                             })()}
                         </div>
-                        <div style={{ color: "#475569", fontSize: 11, fontStyle: "italic" }}>Priming helps the AI reach 'High Confidence' faster by learning your existing routine.</div>
+                        <div style={{ color: "var(--text-muted)", fontSize: 11, fontStyle: "italic" }}>Priming helps the AI reach 'High Confidence' faster by learning your existing routine.</div>
                     </div>
 
                     <div style={SL}>Past Sessions</div>
-                    {!ready && <div style={{ color: "#334155", fontSize: 13 }}>Loading…</div>}
-                    {ready && history.length === 0 && <div style={{ textAlign: "center", padding: "48px 20px", color: "#334155" }}><div style={{ fontSize: 34, marginBottom: 10 }}>📋</div><div style={{ fontSize: 14 }}>No history yet. Start on the Today tab!</div></div>}
+                    {!ready && <div style={{ color: "var(--text-dim)", fontSize: 13 }}>Loading…</div>}
+                    {ready && history.length === 0 && <div style={{ textAlign: "center", padding: "48px 20px", color: "var(--text-dim)" }}><div style={{ fontSize: 34, marginBottom: 10 }}>📋</div><div style={{ fontSize: 14 }}>No history yet. Start on the Today tab!</div></div>}
                     {history.slice().reverse().map((e, i) => (
-                        <div key={e.date || i} style={{ 
-                            background: "rgba(255,255,255,.04)", 
-                            border: "1px solid rgba(255,255,255,.07)", 
-                            borderRadius: 13, 
-                            padding: "13px 15px", 
-                            marginBottom: 8, 
-                            display: "flex", 
-                            justifyContent: "space-between", 
+                        <div key={e.date || i} style={{
+                            background: "var(--glass-bg)",
+                            border: "1px solid var(--glass-border)",
+                            borderRadius: 13,
+                            padding: "13px 15px",
+                            marginBottom: 8,
+                            display: "flex",
+                            justifyContent: "space-between",
                             alignItems: "center",
                             animation: (e.date === deletingId) ? "fadeOut 0.35s forwards" : "slideUp 0.3s ease-out",
                             pointerEvents: (e.date === deletingId) ? "none" : "auto",
                             overflow: "hidden"
                         }}>
                             <div>
-                                <div style={{ fontSize: 13, fontWeight: 600, color: "#cbd5e1" }}>
+                                <div style={{ fontSize: 13, fontWeight: 600, color: "var(--history-text)" }}>
                                     {e.simulated ? "🤖 Simulated Pattern" : new Date(e.date).toLocaleDateString([], { weekday: "short", month: "short", day: "numeric" })}
                                 </div>
-                                <div style={{ fontSize: 12, color: "#475569", marginTop: 2 }}>{e.napsCompleted} naps · {(e.sleepEvents || []).map(x => fmtDur(x.duration)).join(", ") || "no durations"}</div>
+                                <div style={{ fontSize: 12, color: "var(--text-muted)", marginTop: 2 }}>{e.napsCompleted} naps · {(e.sleepEvents || []).map(x => fmtDur(x.duration)).join(", ") || "no durations"}</div>
                             </div>
                             <button onClick={() => delHistory(e.date)} style={DEL_BTN}>✕</button>
                         </div>
                     ))}
-                    {history.length > 0 && <div style={{ background: "rgba(139,92,246,.08)", border: "1px solid rgba(139,92,246,.2)", borderRadius: 15, padding: 18, marginTop: 8 }}>
-                        <div style={{ color: "#c4b5fd", fontSize: 13, fontWeight: 700, marginBottom: 12 }}>📊 Stats</div>
+                    {history.length > 0 && <div style={{ background: "var(--accent-glass-bg)", border: "1px solid var(--accent-glass-border)", borderRadius: 15, padding: 18, marginTop: 8 }}>
+                        <div style={{ color: "var(--accent-lighter)", fontSize: 13, fontWeight: 700, marginBottom: 12 }}>📊 Stats</div>
                         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
                             {[
                                 ["Days tracked", history.length],
@@ -930,9 +995,9 @@ export default function App() {
                                 ["Total naps", history.reduce((s, e) => s + (e.napsCompleted || 0), 0)],
                                 ["Avg nap", (() => { const evs = history.flatMap(e => e.sleepEvents || []).filter(x => x.duration > 0); return evs.length ? fmtDur(Math.round(evs.reduce((s, x) => s + x.duration, 0) / evs.length)) : "--"; })()],
                             ].map(([l, v]) => (
-                                <div key={l} style={{ background: "rgba(255,255,255,.04)", borderRadius: 10, padding: "11px 13px" }}>
-                                    <div style={{ color: "#c4b5fd", fontSize: 18, fontWeight: 700 }}>{v}</div>
-                                    <div style={{ color: "#475569", fontSize: 11, marginTop: 2 }}>{l}</div>
+                                <div key={l} style={{ background: "var(--glass-bg)", borderRadius: 10, padding: "11px 13px" }}>
+                                    <div style={{ color: "var(--accent-lighter)", fontSize: 18, fontWeight: 700 }}>{v}</div>
+                                    <div style={{ color: "var(--text-muted)", fontSize: 11, marginTop: 2 }}>{l}</div>
                                 </div>
                             ))}
                         </div>
@@ -941,48 +1006,48 @@ export default function App() {
 
                 {/* SETTINGS */}
                 {tab === "settings" && <div style={{ animation: "slideUp .3s ease" }}>
-                    <div style={{ background: "rgba(255,255,255,.04)", border: "1px solid rgba(255,255,255,.08)", borderRadius: 17, padding: 20, marginBottom: 16 }}>
+                    <div style={{ background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: 17, padding: 20, marginBottom: 16 }}>
                         <GlassyDatePicker label="Baby's Due Date (Optional)" value={dueDate} onChange={changeDueDate} />
                         <div style={SL}>Current Age in Weeks</div>
                         <WeekSlider value={weeks} onChange={changeWeeks} />
-                        {dueDate && <div style={{ marginTop: 10, color: "#64748b", fontSize: 12 }}>Automatically calculates "Adjusted Age". You can still manually override.</div>}
+                        {dueDate && <div style={{ marginTop: 10, color: "var(--text-faint)", fontSize: 12 }}>Automatically calculates "Adjusted Age". You can still manually override.</div>}
                     </div>
 
-                    <div style={{ background: "rgba(255,255,255,.04)", border: "1px solid rgba(255,255,255,.08)", borderRadius: 17, padding: 20, marginBottom: 16 }}>
+                    <div style={{ background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: 17, padding: 20, marginBottom: 16 }}>
                         <div style={SL}>Evening Stretch</div>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                            <div style={{ fontSize: 13, color: "#e2e8f0" }}>Add extra time before bedtime?</div>
+                            <div style={{ fontSize: 13, color: "var(--text-primary)" }}>Add extra time before bedtime?</div>
                             <button onClick={() => changeStretch(!useStretch)} style={{
-                                background: useStretch ? "#7c3aed" : "rgba(255,255,255,.1)",
+                                background: useStretch ? "var(--accent)" : "var(--glass-bg-hover)",
                                 border: "none", borderRadius: 20, padding: "6px 16px", color: "white", fontWeight: 700, fontSize: 11, cursor: "pointer", transition: "all .3s"
                             }}>{useStretch ? "ON" : "OFF"}</button>
                         </div>
-                        <div style={{ marginTop: 8, color: "#475569", fontSize: 11 }}>Recommended to build sleep pressure, but may cause overtiredness in some babies.</div>
+                        <div style={{ marginTop: 8, color: "var(--text-muted)", fontSize: 11 }}>Recommended to build sleep pressure, but may cause overtiredness in some babies.</div>
                     </div>
-                        <GlassyTimePicker label="Morning Wake Time" value={wakeStr} onChange={changeWake} />
+                    <GlassyTimePicker label="Morning Wake Time" value={wakeStr} onChange={changeWake} />
 
                     <div style={{ marginBottom: 16 }}>
-                        <button onClick={exportData} style={{ width: "100%", padding: "14px", borderRadius: 14, border: "1px solid rgba(139,92,246,.4)", background: "rgba(139,92,246,.1)", color: "#c4b5fd", fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", transition: "all .3s" }}>
+                        <button onClick={exportData} style={{ width: "100%", padding: "14px", borderRadius: 14, border: "1px solid var(--accent-glass-border-strong)", background: "var(--accent-glass-bg)", color: "var(--accent-lighter)", fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", transition: "all .3s" }}>
                             📤 Export Data to JSON
                         </button>
                     </div>
-                    <div style={{ background: "rgba(139,92,246,.08)", border: "1px solid rgba(139,92,246,.2)", borderRadius: 17, padding: 20 }}>
-                        <div style={{ color: "#c4b5fd", fontSize: 13, fontWeight: 700, marginBottom: 14 }}>Week {weeks} — What to expect</div>
+                    <div style={{ background: "var(--accent-glass-bg)", border: "1px solid var(--accent-glass-border)", borderRadius: 17, padding: 20, marginBottom: 16 }}>
+                        <div style={{ color: "var(--accent-lighter)", fontSize: 13, fontWeight: 700, marginBottom: 14 }}>Week {weeks} — What to expect</div>
                         {(() => {
                             const [naps, dur, lx] = getWWInfo(weeks);
                             const base = baseWakeWindow(weeks);
                             return (
                                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 14 }}>
                                     {[["Base Range", `${fmtDur(base - 10)} – ${fmtDur(base + 10)}`], ["Naps/day", naps], ["Avg Nap", `${fmtDur(dur - 15)} – ${fmtDur(dur + 15)}`], ["Learned Offset", learner.offset > 0 ? `+${fmtDur(learner.offset)}` : fmtDur(learner.offset)]].map(([l, v]) => (
-                                        <div key={l} style={{ background: "rgba(255,255,255,.05)", borderRadius: 11, padding: "11px 13px" }}>
-                                            <div style={{ color: "#c4b5fd", fontSize: 17, fontWeight: 700 }}>{v}</div>
-                                            <div style={{ color: "#475569", fontSize: 11, marginTop: 2 }}>{l}</div>
+                                        <div key={l} style={{ background: "var(--glass-bg-hover)", borderRadius: 11, padding: "11px 13px" }}>
+                                            <div style={{ color: "var(--accent-lighter)", fontSize: 17, fontWeight: 700 }}>{v}</div>
+                                            <div style={{ color: "var(--text-muted)", fontSize: 11, marginTop: 2 }}>{l}</div>
                                         </div>
                                     ))}
                                 </div>
                             );
                         })()}
-                        <div style={{ padding: "10px 13px", background: "rgba(255,255,255,.03)", borderRadius: 10, color: "#475569", fontSize: 12, lineHeight: 1.6 }}>
+                        <div style={{ padding: "10px 13px", background: "var(--glass-bg)", borderRadius: 10, color: "var(--text-muted)", fontSize: 12, lineHeight: 1.6 }}>
                             {weeks <= 8 && "Newborn stage: very short wake windows. Follow sleepy cues closely."}
                             {weeks > 8 && weeks <= 16 && "Early infancy: wake windows growing fast. Watch for cues around 1.5h."}
                             {weeks > 16 && weeks <= 24 && "4–6 month range: consolidating to 3 naps. 4-month regression is real!"}
@@ -990,17 +1055,45 @@ export default function App() {
                             {weeks > 36 && "8–12 months: most babies on 2 naps. Nap transitions coming up."}
                         </div>
                     </div>
+
+                    {/* Theme Toggle */}
+                    <div style={{ background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: 17, padding: 20 }}>
+                        <div style={SL}>Appearance</div>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                                <span style={{ fontSize: 20 }}>{theme === 'dark' ? '🌙' : '☀️'}</span>
+                                <div>
+                                    <div style={{ fontSize: 13, color: "var(--text-primary)", fontWeight: 600 }}>{theme === 'dark' ? 'Night Mode' : 'Day Mode'}</div>
+                                    <div style={{ fontSize: 11, color: "var(--text-muted)" }}>{theme === 'dark' ? 'Dark purple with stars' : 'Sunny sky with clouds'}</div>
+                                </div>
+                            </div>
+                            <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} style={{
+                                width: 52, height: 28, borderRadius: 14, border: "none", cursor: "pointer",
+                                background: theme === 'light' ? 'var(--accent-gradient)' : 'var(--glass-bg-hover)',
+                                position: "relative", transition: "all .3s",
+                                boxShadow: theme === 'light' ? 'var(--btn-save-shadow)' : 'none'
+                            }}>
+                                <div style={{
+                                    width: 22, height: 22, borderRadius: "50%", background: "white",
+                                    position: "absolute", top: 3,
+                                    left: theme === 'light' ? 27 : 3,
+                                    transition: "left .3s ease",
+                                    boxShadow: "0 1px 3px rgba(0,0,0,.2)"
+                                }} />
+                            </button>
+                        </div>
+                    </div>
                 </div>}
 
                 {tab === "logic" && <div style={{ animation: "slideUp .3s ease" }}>
                     <div style={{ ...SL, marginBottom: 15 }}>Sleep Reference Chart</div>
-                    
-                    <div style={{ background: "rgba(255,255,255,.04)", border: "1px solid rgba(255,255,255,.08)", borderRadius: 18, padding: "16px 1px", marginBottom: 20, overflowX: "auto" }} className="custom-scroll">
+
+                    <div style={{ background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: 18, padding: "16px 1px", marginBottom: 20, overflowX: "auto" }} className="custom-scroll">
                         <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 400 }}>
                             <thead>
                                 <tr style={{ borderBottom: "1px solid rgba(255,255,255,.06)" }}>
                                     {["Age", "Naps", "WW", "Total Nap", "Night"].map(h => (
-                                        <th key={h} style={{ color: "#94a3b8", fontSize: 10, fontWeight: 700, textAlign: "left", padding: "0 15px 10px", textTransform: "uppercase", letterSpacing: ".1em" }}>{h}</th>
+                                        <th key={h} style={{ color: "var(--text-secondary)", fontSize: 10, fontWeight: 700, textAlign: "left", padding: "0 15px 10px", textTransform: "uppercase", letterSpacing: ".1em" }}>{h}</th>
                                     ))}
                                 </tr>
                             </thead>
@@ -1014,7 +1107,7 @@ export default function App() {
                                 ].map((row, idx) => (
                                     <tr key={idx} style={{ borderBottom: idx === 4 ? "none" : "1px solid rgba(255,255,255,.03)" }}>
                                         {row.map((cell, i) => (
-                                            <td key={i} style={{ padding: "12px 15px", fontSize: 12, color: i === 0 ? "#c4b5fd" : "#cbd5e1", fontWeight: i === 0 ? 700 : 400 }}>{cell}</td>
+                                            <td key={i} style={{ padding: "12px 15px", fontSize: 12, color: i === 0 ? "var(--accent-lighter)" : "var(--text-primary)", fontWeight: i === 0 ? 700 : 400 }}>{cell}</td>
                                         ))}
                                     </tr>
                                 ))}
@@ -1023,23 +1116,23 @@ export default function App() {
                     </div>
 
                     <div style={{ ...SL, marginBottom: 18 }}>The Little Dreamz Blueprint</div>
-                    
+
                     {[
                         { title: "☀️ Awake Windows", icon: "🕒", desc: "Wake windows are the 'sweet spot' for your baby. Ours start at 1h 40m (at 16 weeks) and grow by 2.5 min each week. The final window before bedtime is 'stretched' by an extra 30-45m to build sleep pressure for the night." },
                         { title: "💤 Nap Durations", icon: "😴", desc: "We predict naps based on your baby's age. To protect night sleep, the last nap of the day (the bridge nap) is automatically predicted to be 20% shorter than the others." },
                         { title: "🧠 Self-Learning AI", icon: "🧠", desc: "The app calculates a personal 'Offset' for your baby by comparing our predictions to your actual logs. If your baby consistently needs more or less time, the AI learns and adjusts the entire future schedule." },
                         { title: "⚡ Overtiredness Guard", icon: "🛡️", desc: "Short naps (<40m) mean your baby isn't fully rested. When you log one, the AI will instantly reduce your next wake window by up to 20 minutes to prevent overtiredness." }
                     ].map(card => (
-                        <div key={card.title} style={{ background: "rgba(255,255,255,.04)", border: "1px solid rgba(255,255,255,.08)", borderRadius: 18, padding: 20, marginBottom: 15, backdropFilter: "blur(10px)" }}>
+                        <div key={card.title} style={{ background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: 18, padding: 20, marginBottom: 15, backdropFilter: "blur(10px)" }}>
                             <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 10 }}>
-                                <div style={{ fontSize: 24, background: "rgba(139,92,246,.15)", width: 42, height: 42, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center" }}>{card.icon}</div>
-                                <div style={{ color: "#e2e8f0", fontSize: 16, fontWeight: 700, fontFamily: "'Playfair Display', serif" }}>{card.title}</div>
+                                <div style={{ fontSize: 24, background: "var(--accent-glass-bg-strong)", width: 42, height: 42, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center" }}>{card.icon}</div>
+                                <div style={{ color: "var(--text-primary)", fontSize: 16, fontWeight: 700, fontFamily: "'Playfair Display', serif" }}>{card.title}</div>
                             </div>
-                            <div style={{ color: "#94a3b8", fontSize: 13, lineHeight: 1.6 }}>{card.desc}</div>
+                            <div style={{ color: "var(--text-secondary)", fontSize: 13, lineHeight: 1.6 }}>{card.desc}</div>
                         </div>
                     ))}
-                    
-                    <div style={{ textAlign: "center", padding: "20px 0", color: "#475569", fontSize: 11 }}>
+
+                    <div style={{ textAlign: "center", padding: "20px 0", color: "var(--text-muted)", fontSize: 11 }}>
                         Version 3.2.0 · Little Dreamz AI Engine
                     </div>
                 </div>}
@@ -1049,6 +1142,6 @@ export default function App() {
     );
 }
 
-const SL = { color: "#475569", fontSize: 11, fontWeight: 700, letterSpacing: ".09em", textTransform: "uppercase", marginBottom: 11, display: "block" };
-const IB = { background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.08)", borderRadius: 8, padding: "5px 8px", cursor: "pointer", fontSize: 13, transition: "transform 0.2s" };
+const SL = { color: "var(--text-muted)", fontSize: 11, fontWeight: 700, letterSpacing: ".09em", textTransform: "uppercase", marginBottom: 11, display: "block" };
+const IB = { background: "var(--glass-bg-hover)", border: "1px solid var(--glass-border)", borderRadius: 8, padding: "5px 8px", cursor: "pointer", fontSize: 13, transition: "transform 0.2s" };
 const DEL_BTN = { ...IB, color: "#f87171", background: "rgba(239, 68, 68, 0.08)", border: "1px solid rgba(239, 68, 68, 0.15)", fontWeight: 700 };
